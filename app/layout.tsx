@@ -12,9 +12,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+exexport const metadata: Metadata = {
   title: "Business AI — Your AI Business Manager",
-description: "Business AI helps business owners improve sales, marketing, profits and business strategy with AI.",
+  description: "Business AI helps business owners improve sales, marketing, profits and business strategy with AI.",
+  verification: {
+    google: "xJhXqAXOikaL6ii7wxYIVIhwHd_Gy3QAqArJd8C4mNA",
+  },
+};
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
