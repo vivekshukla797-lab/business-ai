@@ -62,7 +62,7 @@ export default function Home() {
           </div>
 
           <h2 className="max-w-3xl text-5xl font-bold leading-tight md:text-6xl">
-            Run your business smarter with{" "}
+            Grow your business smarter with{" "}
             <span className="text-blue-400">Business AI</span>
           </h2>
 
