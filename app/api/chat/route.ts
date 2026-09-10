@@ -1,4 +1,7 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 export async function POST(req: Request) {
   try {
@@ -11,48 +14,29 @@ export async function POST(req: Request) {
       );
     }
 
-    const response = await fetch("http://localhost:11434/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "llama3.2",
-        stream: false,
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are Business AI, a practical AI business manager. Help business owners with sales, marketing, finance, profit, pricing, operations, strategy and growth. Give clear, practical and actionable answers.",
-          },
-          {
-            role: "user",
-            content: message,
-          },
-        ],
-      }),
+    const model = genAI.getGenerativeModel({
+      model: "gemini-3.6-flash",
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Ollama error:", errorText);
+    const result = await model.generateContent(
+      `You are Business AI, a practical AI business manager.
+Help business owners with sales, marketing, finance, profit, pricing,
+operations, strategy and growth.
 
-      return NextResponse.json(
-        { error: "Local AI is not available." },
-        { status: 500 }
-      );
-    }
+Give clear, practical and actionable answers.
 
-    const data = await response.json();
+User question:
+${message}`
+    );
 
-    return NextResponse.json({
-      reply: data.message?.content || "No response from Business AI.",
-    });
+    const reply = result.response.text();
+
+    return NextResponse.json({ reply });
   } catch (error) {
-    console.error(error);
+    console.error("Gemini error:", error);
 
     return NextResponse.json(
-      { error: "Unable to connect to local AI." },
+      { error: "Unable to connect to Business AI." },
       { status: 500 }
     );
   }
